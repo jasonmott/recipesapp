@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+{% load static %}
+<html>
+<head>
+<meta charset="utf-8">
+<title>Spcica HTML Template | Recipes Detail</title>
+<!-- Stylesheets -->
+<link href="{% static 'css/bootstrap.css' %}" rel="stylesheet">
+<link href="{% static 'css/main.css' %}" rel="stylesheet">
+<link href="{% static 'css/responsive.css' %}" rel="stylesheet">
+
+<link rel="shortcut icon" href="{% static 'images/favicon.png' %}" type="image/x-icon">
+<link rel="icon" href="{% static 'images/favicon.png' %}" type="image/x-icon">
+
+<!-- Responsive -->
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
+
+<!--[if lt IE 9]><script src="https://cdnjs.cloudflare.com/ajax/libs/html5shiv/3.7.3/html5shiv.js"></script><![endif]-->
+<!--[if lt IE 9]><script src="js/respond.js"></script><![endif]-->
+</head>
+
+<body>
+
+<div class="page-wrapper">
+ 	
+    <!-- Preloader -->
+    <div class="preloader"></div>
+ 	
+    <!-- Main Header-->
+    <header class="main-header header-style-one">
+    	
+    	<!--Header-Upper-->
+        <div class="header-upper">
+        	<div class="auto-container">
+            	<div class="clearfix">
+                	
+                	<div class="pull-left logo-box">
+                    	<div class="logo"><a href="index.html"><img src="{% static 'images/logo.png' %}" alt="" title=""></a></div>
+                    </div>
+					
+                   	<div class="nav-outer clearfix">
+						<!-- Mobile Navigation Toggler -->
+                        <div class="mobile-nav-toggler"><span class="icon flaticon-menu"></span></div>
+						<!-- Main Menu -->
+						<nav class="main-menu navbar-expand-md">
+							<div class="navbar-header">
+								<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+									<span class="icon-bar"></span>
+									<span class="icon-bar"></span>
+									<span class="icon-bar"></span>
+								</button>
+							</div>
+
+							<div class="navbar-collapse show collapse clearfix" id="navbarSupportedContent">
+								<ul class="navigation clearfix">
+									<li><a href="{% url 'list_view' %}">Home</a></li>
+									<li class="dropdown"><a href="#">Meals</a>
+										<ul>
+											<li><a href="recipes-2.html">Recipes 03</a></li>
+											<li><a href="recipes-detail-2.html">Recipes Detail 02</a></li>
+										</ul>
+									</li>
+									<li class="dropdown"><a href="#">Cuisines</a>
+										<ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+											{% for cuisine_type in query_cuisine %}
+											<li><a class="dropdown-item" href="{% url 'cuisine_view' cuisine=cuisine_type.id %}">{{ cuisine_type }}</a></li>
+											{% endfor %}
+										  </ul>
+									</li>
+									<li class="dropdown"><a href="#">Diets</a>
+										<ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+											{% for diet_type in query_diet %}
+											<li><a class="dropdown-item" href="{% url 'diet_view' diet=diet_type.id %}">{{ diet_type }}</a></li>
+											{% endfor %}
+										</ul>
+									</li>
+									<li><a href="contact.html">Contact us</a></li>
+									<li><a href="signup.html">Sign Up</a></li>
+								</ul>
+							</div>
+							
+						</nav>
+						
+						<!-- Outer Box -->
+						<div class="outer-box">
+							<!-- Search Box -->
+							<div class="search-box-outer">
+								<div class="dropdown">
+									<button class="search-box-btn dropdown-toggle" type="button" id="dropdownMenu3" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span class="fa fa-search"></span></button>
+									<ul class="dropdown-menu pull-right search-panel" aria-labelledby="dropdownMenu3">
+										<li class="panel-outer">
+											<div class="form-container">
+												<form method="post" action="blog.html">
+													<div class="form-group">
+														<input type="search" name="field-name" value="" placeholder="Search Here" required>
+														<button type="submit" class="search-btn"><span class="fa fa-search"></span></button>
+													</div>
+												</form>
+											</div>
+										</li>
+									</ul>
+								</div>
+							</div>
+							<ul class="login-info">
+								<li class="recipe"><a href="login.html"><span class="fa fa-plus-circle"></span>&nbsp; Login</a></li>
+							</ul>
+						</div>
+						
+					</div>
+                   
+                </div>
+            </div>
+        </div>
+        <!--End Header Upper-->
+        
+		<!-- Mobile Menu  -->
+        <div class="mobile-menu">
+            <div class="menu-backdrop"></div>
+            <div class="close-btn"><span class="icon fa fa-remove"></span></div>
+            
+            <nav class="menu-box">
+                <div class="nav-logo"><a href="index.html"><img src="{% static 'images/logo-2.png' %}" alt="" title=""></a></div>
+                <div class="menu-outer"><!--Here Menu Will Come Automatically Via Javascript / Same Menu as in Header--></div>
+            </nav>
+        </div><!-- End Mobile Menu -->
+		
+    </header>
+    <!--End Main Header -->
+	
+	<!-- Page Title -->
+    <section class="page-title" style="background-image:url({% static 'images/background/12.png' %})">
+    	<div class="auto-container">
+			<h1>Recipes Single</h1>
+        </div>
+    </section>
+    <!--End Page Title-->
+	
+	<!--Sidebar Page Container-->
+    <div class="sidebar-page-container recipes-details-area">
+    	<div class="auto-container">
+        	<div class="row clearfix">
+				<!-- Content Side -->
+                <div class="content-side col-lg-12 col-md-12 col-sm-12">
+                	<div class="recipe-detail">
+						<div class="inner-box">
+							<div class="image">
+								<img src="{{query_set.image_URL}}" alt="" />
+							</div>
+							<div class="content" style="background-image:url({% static 'images/background/13.png' %})">
+								<div class="category">{% for cuisine_type in query_set.cuisine.all %}{{ cuisine_type }} {% endfor %}</div>
+								<h2>{{query_set.title}}</h2>
+								<div class="rating">{{query_set.rating}} Rating</div>
+								<div class="rating">{{query_set.number_of_reviews}} Votes</div>
+								<ul class="post-meta">
+									<li><span class="icon flaticon-dish"></span>{{query_set.ingredient.count}} Ingredients </li>
+									<li><span class="icon flaticon-clock-3"></span>{{query_set.prep_time}} Minutes</li>
+									<li><span class="icon flaticon-business-and-finance"></span>{{query_set.servings}} Servings</li>
+								</ul>
+							</div>
+							
+							<div class="row clearfix">
+							
+								<div class="column col-lg-12">
+
+									<div class="my-tab">
+										<div class="tab-content" id="pills-tabContent">
+										  <div class="tab-pane fade show active" id="pills-home" role="tabpanel" aria-labelledby="pills-home-tab">
+										  		<div class="row">
+										  			<div class="col-lg-12">
+														<div class="ingredients-block">
+															<div class="block-inner">
+																<h4>Summary</h4>
+																<ul class="nutrition-list">
+																	<p>{{query_set.summary|safe}}</p>
+																</ul>
+															</div>
+														</div>
+										  			<div class="col-lg-6">
+										  				<!-- Ingredients Block -->
+														<div class="ingredients-block">
+															<div class="block-inner">
+																<h4>Ingredients<br/></h4>
+																<ul class="ingredients-list">
+																	{% for ingredient_type in query_set.ingredient.all %}<a href="{% url 'ingredient_view' ingredient=ingredient_type.id %}">{{ ingredient_type }}</a><br/>{% endfor %}
+																	<!--{% for ingredient_type in object.ingredient.all %}{{ ingredient_type }}<br/>{% endfor %}-->
+																</ul>
+															</div>
+														</div>
+									
+														<!-- Nutrition Block -->
+														<div class="ingredients-block">
+															<div class="block-inner">
+																<h4>Nutrition (Per Serving)</h4>
+																<ul class="nutrition-list">
+																	<li>Calories <span>{{query_set.calories}}</span></li>
+																	<li>Protein <span>{{query_set.protein}}</span></li>
+																	<li>Fat <span>{{query_set.fat}}</span></li>
+																	<li>Carbs <span>{{query_set.carbs}}</span></li>
+																</ul>
+															</div>
+														</div>
+										  			</div>
+										  			<div class="col-lg-6">
+										  				<!-- Ingredients Block -->
+														<div class="ingredients-block">
+															<div class="block-inner">
+																<h4>Directions</h4>
+																<ul class="direction-list">
+																	<p>{{query_set.instructions|safe}}</p>
+																</ul>
+															</div>
+														</div>
+										  			</div>	
+										  		</div>
+										  </div>
+										  </div>
+										</div>
+									</div>
+								</div>
+							
+							</div>
+
+							
+								
+							
+							<!-- Related Items -->
+							<div class="related-items">
+								<h4>You may also like</h4>
+								
+								<div class="row clearfix">
+				
+									<!-- Recipes Block -->
+									<div class="recipes-block style-two col-lg-4 col-md-6 col-sm-12">
+										<div class="inner-box">
+											<div class="image">
+												<a href="recipes-detail.html"><img src="{% static 'images/resource/recipe-23.jpg' %}" alt="" /></a>
+											</div>
+											<div class="lower-content">
+												<div class="author-image"><a href="author-details.html"><img src="{% static 'images/resource/author-3.jpg' %}" alt="" /></a></div>
+												<div class="category">CHICKEN</div>
+												<h4><a href="recipes-detail.html">Pressure-Cooker Beef Short Ribs with Chutney</a></h4>
+											</div>
+										</div>
+									</div>
+									
+									<!-- Recipes Block -->
+									<div class="recipes-block style-two col-lg-4 col-md-6 col-sm-12">
+										<div class="inner-box">
+											<div class="image">
+												<a href="recipes-detail.html"><img src="{% static 'images/resource/recipe-24.jpg' %}" alt="" /></a>
+											</div>
+											<div class="lower-content">
+												<div class="author-image"><a href="author-details.html"><img src="{% static 'images/resource/author-3.jpg' %}" alt="" /></a></div>
+												<div class="category">CHICKEN</div>
+												<h4><a href="recipes-detail.html">Pressure-Cooker Beef Short <br> Ribs with Chutney</a></h4>
+											</div>
+										</div>
+									</div>
+									
+									<!-- Recipes Block -->
+									<div class="recipes-block style-two col-lg-4 col-md-6 col-sm-12">
+										<div class="inner-box">
+											<div class="image">
+												<a href="recipes-detail.html"><img src="{% static 'images/resource/recipe-25.jpg' %}" alt="" /></a>
+											</div>
+											<div class="lower-content">
+												<div class="author-image"><a href="author-details.html"><img src="{% static 'images/resource/author-3.jpg' %}" alt="" /></a></div>
+												<div class="category">CHICKEN</div>
+												<h4><a href="recipes-detail.html">Pressure-Cooker Beef Short <br> Ribs with Chutney</a></h4>
+											</div>
+										</div>
+									</div>
+									
+								</div>
+								
+							</div>
+							
+						</div>
+					</div>
+				</div>
+				
+			</div>
+		</div>
+	</div>
+	
+
+	
+
+	
+	<!-- Main Footer -->
+    <footer class="main-footer" style="background-image:url(images/background/5.png)">
+		<div class="auto-container">
+			<div class="logo">
+				<a href="index.html"><img src="{% static 'images/footer-logo.png' %}" alt="" /></a>
+			</div>
+			<ul class="footer-nav">
+				<li><a href="#">Home</a></li>
+				<li><a href="#">Recipes</a></li>
+				<li><a href="#">About us</a></li>
+				<li><a href="#">Events</a></li>
+				<li><a href="#">Blog</a></li>
+				<li><a href="#">Contacts</a></li>
+			</ul>
+			<div class="copyright">&copy; All Right Reserved 2020</div>
+		</div>
+	</footer>
+	
+</div>
+<!--End pagewrapper-->
+
+<!--Scroll to top-->
+<div class="scroll-to-top scroll-to-target" data-target="html"><span class="fa fa-arrow-circle-up"></span></div>
+
+<script src="{% static 'js/jquery.js' %}"></script>
+<script src="{% static 'js/popper.min.js' %}"></script>
+<script src="{% static 'js/bootstrap.min.js' %}"></script>
+<script src="{% static 'js/jquery.mCustomScrollbar.concat.min.js' %}"></script>
+<script src="{% static 'js/jquery.fancybox.js' %}"></script>
+<script src="{% static 'js/appear.js' %}"></script>
+<script src="{% static 'js/owl.js' %}"></script>
+<script src="{% static 'js/wow.js' %}"></script>
+<script src="{% static 'js/jquery-ui.js' %}"></script>
+<script src="{% static 'js/script.js' %}"></script>
+
+</body>
+</html>

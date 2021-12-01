@@ -1,0 +1,66 @@
+{% extends 'receipes_app/main.html' %}
+{% load static %}
+{% block content %}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content="" />
+    <meta
+      name="author"
+      content="Mark Otto, Jacob Thornton, and Bootstrap contributors"
+    />
+    <meta name="generator" content="Hugo 0.88.1" />
+    <title>Recipe</title>
+
+    <link
+      rel="canonical"
+      href="https://getbootstrap.com/docs/5.1/examples/album/"
+    />
+
+    <!-- Bootstrap core CSS -->
+
+    <style>
+      .bd-placeholder-img {
+        font-size: 1.125rem;
+        text-anchor: middle;
+        -webkit-user-select: none;
+        -moz-user-select: none;
+        user-select: none;
+      }
+
+      .boxed {
+        border: 1px solid black ;
+      }
+
+      @media (min-width: 768px) {
+        .bd-placeholder-img-lg {
+          font-size: 3.5rem;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+        <img src={{object.image_URL}}>
+        <h3>{{object.title}}</h3>
+        <p>Tags:<br/>{% for cuisine_type in object.cuisine.all %}<button type="button" class="btn btn-sm btn-outline-primary"><a href="{% url 'cuisine_view' cuisine=cuisine_type.id %}">{{ cuisine_type }}</a></button></a> {% endfor %}{% for diet_type in object.diets.all %}<button type="button" class="btn btn-sm btn-outline-primary"><a href="{% url 'diet_view' diet=diet_type.id %}">{{ diet_type }}</a></button></a> {% endfor %}</p>
+        <p>Rating:<br/>{{object.rating}}</p>
+        <p>Number of Votes:<br/>{{object.number_of_reviews}}</p>
+        <p>Preparation Time:<br/>{{object.prep_time}} Minutes</p>
+        <p>Servings:<br/>{{object.servings}}</p>
+        <p>Calories per Serving:<br/>{{object.calories}}</p>
+        <p>Carbs per Serving:<br/>{{object.carbs}} grams</p>
+        <p>Fat per Serving:<br/>{{object.fat}} grams</p>
+        <p>Summary:<br/>{{object.summary|safe}}></p>
+        <p>Instructions:<br/>{{object.instructions|safe}}</p>
+        <p>Ingredients:<br/>{% for ingredient_type in object.ingredient.all %}<button type="button" class="btn btn-sm btn-outline-primary"><a href="{% url 'ingredient_view' ingredient=ingredient_type.id %}">{{ ingredient_type }}</a></button> {% endfor %}</p>
+        <!-- Need to figure out the how to retrieve Ingredient Amount
+        <p>Ingredients:<br/>{% for ingredient_amount in object.ingredient_amount.all %}{{ ingredient_amount }}<br/>{% endfor %}</p>
+        -->
+        <p>Source: <a href={{object.source_URL}}>{{object.name_of_source}}</button></a></p>
+    </div>
+  </body>
+</html>
+{% endblock content %}
