@@ -1,19 +1,19 @@
 from django.core.management.base import BaseCommand, CommandError
 import requests
-from receipes_app.models import Receipe, Ingredient, Tag, Cuisine, Diet, IngredientAmount
+from receipes_app.models import Receipe, Ingredient, Tag, Cuisine, Diet, IngredientAmount, DishType
 
 class Command(BaseCommand):
 
     def handle(self, *args, **options):
         API_Key = "e4f1de8d0e524838ad8a2449af592136"     
         api_auth = {'apiKey':API_Key}
-        cuisine_selection = {'thai'}
-        spoonacular_parameters = {'apiKey': API_Key,'limitLicense': True,'cuisine': cuisine_selection,'number': 50}
+        cuisine_selection = {'korean'}
+        spoonacular_parameters = {'apiKey': API_Key,'limitLicense': True,'cuisine': cuisine_selection,'number': 40}
         spoonacular_url = "https://api.spoonacular.com/recipes/complexSearch?"
         spoonacular_data = requests.get(spoonacular_url, params=spoonacular_parameters) 
         #print(spoonacular_data.url)
         result = spoonacular_data.json()
-        print(result)
+        #print(result)
 
         receipe_info = result['results']
         #Below loops throught receipe_info for receipe_id and stores in a list
@@ -34,6 +34,7 @@ class Command(BaseCommand):
             list_of_nutrition = rec.get('nutrition')
             nutrients = list_of_nutrition.get('nutrients')
             rec_name = rec.get('title')
+            #list_of_dish_type = rec.get('dishTypes')
             # Using [] because contents of nutrients is a list - Pulls calories, fat, carbs, and protein
             calories_dict = nutrients[0]
             fat_dict = nutrients[1]
@@ -43,6 +44,7 @@ class Command(BaseCommand):
             receipe_cuisines = rec['cuisines']
             receipe_diets = rec['diets']
             receipe_ingredients = rec['extendedIngredients']
+            receipe_dish_types = rec['dishTypes']
 
             rec, created = Receipe.objects.get_or_create(
                 title = rec['title'],
@@ -63,9 +65,20 @@ class Command(BaseCommand):
                 carbs = carbs_dict.get('amount'),
                 protein = protein_dict.get('amount'),
             )
-
+            
             # for category in full_receipe_contents:
             #     print(category)
+            for dish_type in receipe_dish_types:
+                try:
+                    dish_type = DishType.objects.get(dish_type)
+                except:
+                    print(f"{dish_type} did not work")
+                dish_type, created = DishType.objects.get_or_create(
+                    name = dish_type,
+                )
+                ####### Need to add cuisine to receipe through Receipe.cuisine
+                rec.dish_type.add(dish_type)
+
             for cuisine in receipe_cuisines:
                 try:
                     cuisine = Cuisine.objects.get(cuisine)
@@ -93,14 +106,15 @@ class Command(BaseCommand):
                 ing_unit = ingredient['unit']
                 try:
                     value_ingredient = ingredient['name']
-                    value_aisle = ingredient['aisle']
                 except:
                     print(f"{value_ingredient} did not work")
                 ingredient, created = Ingredient.objects.get_or_create(
                     name = value_ingredient,
-                    grocery_aisle = value_aisle,
-                )
+                )                
                 rec.ingredient.add(ingredient)
+                print(ingredient)
+
+                #Issue is on the line below where it returns 2 items
                 ingredient_id = Ingredient.objects.get(name=ing_name)
                 receipe_id = Receipe.objects.get(title=rec_name)
 

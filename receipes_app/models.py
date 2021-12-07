@@ -33,6 +33,7 @@ class Receipe(models.Model):
     protein = models.FloatField(blank=True,default=0)
     image_URL = models.URLField(blank=True,null=True) 
     ingredient = models.ManyToManyField('Ingredient', blank=True)
+    dish_type = models.ManyToManyField('DishType', blank=True)
     ingredient_amount = models.ManyToManyField('IngredientAmount', blank=True, editable=False)
 
     class Meta:
@@ -46,7 +47,6 @@ class Receipe(models.Model):
         return reverse("RecipeDetailView", kwargs={"pk": self.pk})
 
 class Ingredient(models.Model):
-    grocery_aisle = models.CharField(choices=grocery_aisles,max_length=100,blank=True, default=None,null=True)
     name = models.CharField(max_length=200)
     
     class Meta:
@@ -63,7 +63,7 @@ class IngredientAmount(models.Model):
 
     def __str__(self):
         #return str(self.name)
-        return f'{self.receipe_name} - {self.amount} {self.select_type_of_unit} {self.name}' 
+        return f'{self.amount} {self.select_type_of_unit} {self.name}' 
 
 class Cuisine(models.Model):
     name = models.CharField(max_length=200)
@@ -75,6 +75,15 @@ class Cuisine(models.Model):
         return str(self.name.title())
 
 class Diet(models.Model):
+    name = models.CharField(max_length=200)
+
+    class Meta:
+        ordering = ['name']
+        
+    def __str__(self):
+        return str(self.name.title())
+
+class DishType(models.Model):
     name = models.CharField(max_length=200)
 
     class Meta:

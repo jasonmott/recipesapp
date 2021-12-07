@@ -23,8 +23,11 @@ from . import views
 urlpatterns = [
     path('admin/', admin.site.urls),
     path("",views.GetAllRecipes.as_view(), name = "list_view"),
+    path("recipe/all/",views.ListAllRecipes.as_view(), name = "list_all_recipes"),
     path("recipe/<int:pk>/", views.RecipeDetailView.as_view(), name="RecipeDetailView"),
     path("recipe/cuisine/<cuisine>/",views.FilterByCuisine.as_view(), name="cuisine_view"),
     path("recipe/diet/<diet>/",views.FilterByDiet.as_view(), name="diet_view"),
+    path("recipe/dishtype/<dish_type>/",views.FilterByDishType.as_view(), name="dish_type_view"),
     path("recipe/ingredient/<ingredient>/",views.FilterByIngredient.as_view(), name="ingredient_view"),
+    path("recipe/search/<search_query>/",views.FilterByUserSearch.as_view(), name="search_view"),
 ]
