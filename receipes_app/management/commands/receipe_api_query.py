@@ -5,7 +5,8 @@ from receipes_app.models import Receipe, Ingredient, Tag, Cuisine, Diet, Ingredi
 class Command(BaseCommand):
 
     def handle(self, *args, **options):
-        API_Key = "e4f1de8d0e524838ad8a2449af592136"     
+        API_Key = "e4f1de8d0e524838ad8a2449af592136"    
+        #Remove API key 
         api_auth = {'apiKey':API_Key}
         cuisine_selection = {'korean'}
         spoonacular_parameters = {'apiKey': API_Key,'limitLicense': True,'cuisine': cuisine_selection,'number': 40}
