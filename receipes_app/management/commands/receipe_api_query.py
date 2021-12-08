@@ -8,8 +8,8 @@ class Command(BaseCommand):
         API_Key = "e4f1de8d0e524838ad8a2449af592136"    
         #Remove API key 
         api_auth = {'apiKey':API_Key}
-        cuisine_selection = {'korean'}
-        spoonacular_parameters = {'apiKey': API_Key,'limitLicense': True,'cuisine': cuisine_selection,'number': 40}
+        cuisine_selection = {'american'}
+        spoonacular_parameters = {'apiKey': API_Key,'limitLicense': True,'cuisine': cuisine_selection,'number': 100}
         spoonacular_url = "https://api.spoonacular.com/recipes/complexSearch?"
         spoonacular_data = requests.get(spoonacular_url, params=spoonacular_parameters) 
         #print(spoonacular_data.url)
