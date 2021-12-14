@@ -1,0 +1,9 @@
+<h1>Search Results</h1>
+
+<ul>
+{% for user_search in object_list %}
+    <li>
+        {{ user_search.title}}, {{user_search.summary}}
+    </li>
+{% endfor %}
+</ul>

@@ -5,16 +5,16 @@ from receipes_app.models import Receipe, Ingredient, Tag, Cuisine, Diet, Ingredi
 class Command(BaseCommand):
 
     def handle(self, *args, **options):
-        API_Key = "e4f1de8d0e524838ad8a2449af592136"    
+        API_Key = "d21884ddb6024d8983e03760cd6cd479"    
         #Remove API key 
         api_auth = {'apiKey':API_Key}
-        cuisine_selection = {'american'}
-        spoonacular_parameters = {'apiKey': API_Key,'limitLicense': True,'cuisine': cuisine_selection,'number': 100}
+        cuisine_selection = {'breakfast'}
+        spoonacular_parameters = {'apiKey': API_Key,'limitLicense': True,'query': cuisine_selection,'number': 100}
         spoonacular_url = "https://api.spoonacular.com/recipes/complexSearch?"
         spoonacular_data = requests.get(spoonacular_url, params=spoonacular_parameters) 
         #print(spoonacular_data.url)
         result = spoonacular_data.json()
-        #print(result)
+        print(result)
 
         receipe_info = result['results']
         #Below loops throught receipe_info for receipe_id and stores in a list

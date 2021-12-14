@@ -1,0 +1,10 @@
+<form class="add_your_class" method="GET" action="{% url 'search' %}" >
+    <input class="add_your_class" type="search" name="search"> 
+    <button class="add_your_class" type="submit"> Search </button>
+</form>
+
+{% for result in all_search_results %}
+{{ result.title }} {{ result.summary }}
+{% empty %}
+   add something to show no results
+{% endfor %}

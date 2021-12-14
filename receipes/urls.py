@@ -30,4 +30,8 @@ urlpatterns = [
     path("recipe/dishtype/<dish_type>/",views.FilterByDishType.as_view(), name="dish_type_view"),
     path("recipe/ingredient/<ingredient>/",views.FilterByIngredient.as_view(), name="ingredient_view"),
     path("recipe/search/<search_query>/",views.FilterByUserSearch.as_view(), name="search_view"),
+    path("contactus/",views.ContactUs.as_view(), name = "contact_us_view"),
+    path("signup/",views.SignUp.as_view(), name = "sign_up_view"),
+    path("login/",views.UserLogin.as_view(), name = "login_view"),
+    path('search/', views.SearchView.as_view(), name="search"),
 ]

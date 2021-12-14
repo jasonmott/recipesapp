@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from rest_framework import serializers, generics, permissions
 from django.views import View 
-from django.views.generic import DetailView
+from django.views.generic import DetailView, ListView
 from django.http import HttpResponse
 from receipes_app.models import Receipe, Cuisine, Diet, IngredientAmount, DishType, Ingredient
 from django.db.models import Q
@@ -23,19 +23,6 @@ class GetAllDiets(View):
         diet_type = Diet.objects.all()
         return render(request, "receipes_app/index.html", {"query_diet":diet_type})
 
-
-# class GetAllRecipes(View):
-    
-#     def get(self, request):
-#         count_receipes = Receipe.objects.count()
-#         random_number = random.randint(1,count_receipes)
-#         print(random_number)
-#         # random_recipe = Receipe.objects.get(id=random_number)
-#         recipe = Receipe.objects.all()
-#         cuisine = Cuisine.objects.all()
-#         diet = Diet.objects.all()
-#         ingredient = IngredientAmount.objects.all()
-#         return render(request, "receipes_app/index.html", {"query_set":recipe, "query_cuisine":cuisine, "query_diet":diet})
 
 class GetAllRecipes(View):
     
@@ -65,23 +52,25 @@ class RecipeDetailView(DetailView):
     model = Receipe
 
     def get(self, request, **kwargs):
-        all_recipes = Receipe.objects.all()
+        all_recipes = Receipe.objects.all().order_by("-rating")
         recipe = Receipe.objects.get(id=kwargs['pk'])
+        #print(recipe_cuisines)
         cuisine = Cuisine.objects.all()
         diet = Diet.objects.all()
         dish_type = DishType.objects.all()
         recipe_ingredients = IngredientAmount.objects.filter(receipe_name=kwargs['pk'])
+        print(recipe.cuisine)
+        popular_recipes = Receipe.objects.filter(rating__gte=90.00).filter(number_of_reviews__gte=10).filter(cuisine="1").order_by("-rating")[:4]
         all_ingredients = Ingredient.objects.all()
         dish_type = DishType.objects.all()
-        # popular_recipe1 = Cuisine.objects.get(id=kwargs['pk'])
-        # print(popular_recipe1)
-        return render(request, "receipes_app/receipe_detail.html", {"query_set":recipe, "query_cuisine":cuisine, "query_diet":diet, "query_ingredient_amount":recipe_ingredients, "query_dishtype":dish_type, "query_ingredients":all_ingredients, "query_all_recipes":all_recipes})
+        print(recipe)
+        return render(request, "receipes_app/receipe_detail.html", {"query_set":recipe, "query_popular_receipes":popular_recipes, "query_cuisine":cuisine, "query_diet":diet, "query_ingredient_amount":recipe_ingredients, "query_dishtype":dish_type, "query_ingredients":all_ingredients, "query_all_recipes":all_recipes})
 
 class FilterByCuisine(View):
     
     def get(self, request, **kwargs):
 
-        recipe = Receipe.objects.filter(cuisine=kwargs["cuisine"])
+        recipe = Receipe.objects.filter(cuisine=kwargs["cuisine"]).order_by("-rating")
         cuisine = Cuisine.objects.all()
         diet = Diet.objects.all()
         dish_type = DishType.objects.all()
@@ -92,7 +81,7 @@ class FilterByDiet(View):
     
     def get(self, request, **kwargs):
 
-        recipe = Receipe.objects.filter(diets=kwargs["diet"])
+        recipe = Receipe.objects.filter(diets=kwargs["diet"]).order_by("-rating")
         cuisine = Cuisine.objects.all()
         diet = Diet.objects.all()
         dish_type = DishType.objects.all()
@@ -103,7 +92,7 @@ class FilterByIngredient(View):
     
     def get(self, request, **kwargs):
 
-        recipe = Receipe.objects.filter(ingredient=kwargs["ingredient"])
+        recipe = Receipe.objects.filter(ingredient=kwargs["ingredient"]).order_by("-rating")
         cuisine = Cuisine.objects.all()
         diet = Diet.objects.all()
         dish_type = DishType.objects.all()
@@ -114,7 +103,7 @@ class FilterByDishType(View):
     
     def get(self, request, **kwargs):
 
-        recipe = Receipe.objects.filter(dish_type=kwargs["dish_type"])
+        recipe = Receipe.objects.filter(dish_type=kwargs["dish_type"]).order_by("-rating")
         cuisine = Cuisine.objects.all()
         diet = Diet.objects.all()
         dish_type = DishType.objects.all()
@@ -122,7 +111,7 @@ class FilterByDishType(View):
         return render(request, "receipes_app/all_recipes.html", {"query_set":recipe, "query_cuisine":cuisine, "query_diet":diet, "query_dishtype":dish_type, "query_ingredients":all_ingredients})
 
 class FilterByUserSearch(View):
-    
+
     def get(self, request, **kwargs):
 
         user_query = (kwargs["search_query"])
@@ -136,13 +125,70 @@ class FilterByUserSearch(View):
         all_ingredients = Ingredient.objects.all()
         return render(request, "receipes_app/all_recipes.html", {"query_set":search_query, "query_cuisine":cuisine, "query_diet":diet, "query_dishtype":dish_type, "query_ingredients":all_ingredients})
 
-
 class ListAllRecipes(View):
 
     def get(self, request, **kwargs):
 
-        all_recipes = Receipe.objects.all()
-        return render(request, "receipes_app/all_recipes.html", {"query_all_recipes":all_recipes})
+        all_recipes = Receipe.objects.all().order_by("-rating")
+        cuisine = Cuisine.objects.all()
+        diet = Diet.objects.all()
+        dish_type = DishType.objects.all()
+        all_ingredients = Ingredient.objects.all()
+
+        return render(request, "receipes_app/list_all_recipes.html", {"query_all_recipes":all_recipes, "query_cuisine":cuisine, "query_diet":diet, "query_dishtype":dish_type, "query_ingredients":all_ingredients})
+
+class ContactUs(View):
+    
+    def get(self, request):
+
+        cuisine = Cuisine.objects.all()
+        diet = Diet.objects.all()
+        dish_type = DishType.objects.all()
+        all_ingredients = Ingredient.objects.all()
+
+        return render(request, "receipes_app/contact.html", {"query_cuisine":cuisine, "query_diet":diet, "query_dishtype":dish_type, "query_ingredients":all_ingredients})
+
+
+class UserLogin(View):
+    
+    def get(self, request):
+
+        cuisine = Cuisine.objects.all()
+        diet = Diet.objects.all()
+        dish_type = DishType.objects.all()
+        all_ingredients = Ingredient.objects.all()
+
+        return render(request, "receipes_app/login.html", {"query_cuisine":cuisine, "query_diet":diet, "query_dishtype":dish_type, "query_ingredients":all_ingredients})
+
+class SignUp(View):
+    
+    def get(self, request):
+
+        cuisine = Cuisine.objects.all()
+        diet = Diet.objects.all()
+        dish_type = DishType.objects.all()
+        all_ingredients = Ingredient.objects.all()
+
+        return render(request, "receipes_app/signup.html", {"query_cuisine":cuisine, "query_diet":diet, "query_dishtype":dish_type, "query_ingredients":all_ingredients})
+
+class SearchView(ListView):
+	model = Receipe
+	template_name = 'receipes_app/recipe_search.html'
+	context_object_name = 'all_search_results'
+
+	def get_queryset(self):
+		print(self.request.GET.get('search'))
+		result = super(SearchView, self).get_queryset()
+		query = self.request.GET.get('search')
+		if query:
+			postresult = Receipe.objects.filter(title__contains=query)
+			result = postresult
+		else:
+			result = None
+		print(result)
+		return result
+
+
 
 
 
