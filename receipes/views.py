@@ -174,19 +174,29 @@ class SignUp(View):
 class SearchView(ListView):
 	model = Receipe
 	template_name = 'receipes_app/recipe_search.html'
-	context_object_name = 'all_search_results'
+	#context_object_name = 'all_search_results'
 
-	def get_queryset(self):
-		print(self.request.GET.get('search'))
-		result = super(SearchView, self).get_queryset()
+	def get_context_data(self, **kwargs):
+		#print(self.request.GET.get('search'))
+		context = super(SearchView, self).get_context_data(**kwargs)
+		print("This is the context",context, type(context))
 		query = self.request.GET.get('search')
 		if query:
 			postresult = Receipe.objects.filter(title__contains=query)
-			result = postresult
+			context['all_search_results'] = postresult
 		else:
-			result = None
-		print(result)
-		return result
+			context['all_search_results'] = None
+		#print(result)
+		cuisine = Cuisine.objects.all()
+		diet = Diet.objects.all()
+		dish_type = DishType.objects.all()
+		all_ingredients = Ingredient.objects.all()
+		context['query_cuisine'] = cuisine
+		context['query_diet'] = diet
+		context['query_dishtype'] = dish_type
+		context['query_ingredients'] = all_ingredients
+		return context
+        # Git
 
 
 
