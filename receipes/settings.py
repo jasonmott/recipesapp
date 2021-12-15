@@ -133,9 +133,9 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/3.2/howto/static-files/
 # remove this
 STATIC_URL = '/static/'
-STATIC_ROOT = '/var/www/recipesapp/receipes/static/'
+STATIC_ROOT = '/var/www/recipesapp/static/'
 MEDIA_URL = '/media/'
-MEDIA_ROOT = '/var/www/recipesapp/receipes/media/'
+MEDIA_ROOT = '/var/www/recipesapp/media/'
 #Comment
 
 # Default primary key field type
